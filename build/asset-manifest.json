@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e44d6812.css",
+    "main.js": "/static/js/main.f54413a9.js",
+    "static/js/453.acca0757.chunk.js": "/static/js/453.acca0757.chunk.js",
+    "static/media/fodomevideo.mp4": "/static/media/fodomevideo.4f3978a876f495078fac.mp4",
+    "static/media/Mohammed_Ashir_Resume_New.pdf": "/static/media/Mohammed_Ashir_Resume_New.36d784368558ed70d46d.pdf",
+    "index.html": "/index.html",
+    "main.e44d6812.css.map": "/static/css/main.e44d6812.css.map",
+    "main.f54413a9.js.map": "/static/js/main.f54413a9.js.map",
+    "453.acca0757.chunk.js.map": "/static/js/453.acca0757.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e44d6812.css",
+    "static/js/main.f54413a9.js"
+  ]
+}
