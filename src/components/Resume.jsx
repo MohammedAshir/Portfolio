@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import resumePDF from '../assets/Mohammed_Ashir_Resume_New.pdf';
+import resumePDF from '../assets/MohammedAshir_Resume.pdf';
 
 const Resume = () => {
   const experiences = [
@@ -62,26 +62,31 @@ const Resume = () => {
         </div>
 
         <div className="relative">
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-indigo-200 rounded"></div>
+          {/* Timeline line - positioned differently for mobile and desktop */}
+          <div className="absolute left-6 sm:left-1/2 w-1 h-full bg-indigo-200 rounded -z-10"></div>
 
           {experiences.map((exp, index) => (
-            <div key={index} className={`mb-16 flex flex-col sm:flex-row ${index % 2 !== 0 ? 'sm:flex-row-reverse' : ''}`}>
-              <div className="sm:w-1/2 px-6 sm:px-8 mb-6 sm:mb-0">
-                <motion.div
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -60 : 60 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
-                  viewport={{ once: true }}
-                  className="bg-gray-50 p-6 rounded-lg border-l-4 border-indigo-500 shadow hover:shadow-md transition-shadow"
-                >
-                  <h3 className="text-xl font-semibold mb-1">{exp.role}</h3>
-                  <p className="text-indigo-600 font-medium">{exp.company}</p>
-                  <p className="text-sm text-gray-500 mb-3">{exp.duration}</p>
-                  <p className="text-gray-700 whitespace-pre-line">{exp.description}</p>
-                  <p className="text-sm text-indigo-500 mt-3 font-medium">Tech: {exp.tech}</p>
-                </motion.div>
-              </div>
-              <div className="sm:w-1/2 flex justify-center items-start pt-2">
+            <div key={index} className={`mb-16 flex ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+              {/* Mobile dot - always visible */}
+              <div className="sm:hidden absolute left-6 -translate-x-1/2 w-6 h-6 bg-indigo-600 border-4 border-white rounded-full shadow-md"></div>
+              
+              {/* Content card */}
+              <motion.div
+                initial={{ opacity: 0, x: index % 2 === 0 ? -60 : 60 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className={`w-full sm:w-5/12 bg-gray-50 p-6 rounded-lg border-l-4 border-indigo-500 shadow hover:shadow-md transition-shadow ${index % 2 === 0 ? 'sm:mr-auto' : 'sm:ml-auto'}`}
+              >
+                <h3 className="text-xl font-semibold mb-1">{exp.role}</h3>
+                <p className="text-indigo-600 font-medium">{exp.company}</p>
+                <p className="text-sm text-gray-500 mb-3">{exp.duration}</p>
+                <p className="text-gray-700 whitespace-pre-line">{exp.description}</p>
+                <p className="text-sm text-indigo-500 mt-3 font-medium">Tech: {exp.tech}</p>
+              </motion.div>
+              
+              {/* Desktop dot - positioned after content for even items, before for odd */}
+              <div className={`hidden sm:flex items-center ${index % 2 === 0 ? 'order-1 ml-4' : 'order-0 mr-4'}`}>
                 <div className="w-6 h-6 bg-indigo-600 border-4 border-white rounded-full shadow-md"></div>
               </div>
             </div>

@@ -5,9 +5,10 @@ const UpcomingProjects = () => {
       title: "RK Plywood, Glass and Hardware E-commerce",
       description: "A comprehensive e-commerce platform for plywood, glass, and hardware products with advanced inventory management.",
       status: "In Production",
-      progress: 65,
+      progress: 75,
       type: "client",
-      tags: ["web", "ecommerce", "React", "Java Spring"]
+      tags: ["web", "ecommerce", "React", "Java Spring"],
+      previewUrl: "https://rkply.netlify.app" // Replace with your actual Netlify URL
     }
   ];
 
@@ -48,7 +49,7 @@ const UpcomingProjects = () => {
                 </div>
                 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 mb-4">
                   {project.tags.map(tag => (
                     <span 
                       key={tag} 
@@ -58,6 +59,18 @@ const UpcomingProjects = () => {
                     </span>
                   ))}
                 </div>
+                
+                {/* Preview button */}
+                {project.previewUrl && (
+                  <a
+                    href={project.previewUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-300 text-sm sm:text-base"
+                  >
+                    Visit Preview
+                  </a>
+                )}
               </div>
             </div>
           ))}
