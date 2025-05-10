@@ -1,40 +1,81 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import fodomevideo from '../assets/videos/fodomevideo.mp4';
-
+import mutualFundImage1 from '../assets/images/msl-1.png'; // Add your actual image imports
+import mutualFundImage2 from '../assets/images/msl-2.png';
+import mutualFundImage3 from '../assets/images/msl-3.png';
+import mutualFundImage4 from '../assets/images/msl-4.png';
+import mutualFundImage5 from '../assets/images/msl-5.png';
+import mutualFundImage6 from '../assets/images/msl-6.png';
+import dueTrackerImage1 from '../assets/images/due-1.png';
+import dueTrackerImage2 from '../assets/images/due-2.png';
+import dueTrackerImage3 from '../assets/images/due-3.png';
 
 const Projects = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [hoveredProject, setHoveredProject] = useState(null);
   const [iframeLoaded, setIframeLoaded] = useState({});
 
-  const projects = [
+  // Memoized projects data to prevent unnecessary recalculations
+  const projects = useMemo(() => [
     {
       id: 1,
       title: "Belt & Wallet E-commerce Website",
-      description: "An online store for belts and wallets with e-commerce features using MERN",
+      description: "An online store for belts and wallets with e-commerce features using MERN stack.",
       tags: ["web", "ecommerce", "MERN"],
       preview: "https://makoshark.netlify.app",
-      type: "client"
+      type: "client",
+      showCode: false
     },
     {
       id: 2,
+      title: "Mutual Fund Investment System",
+      description: "A comprehensive system for tracking mutual fund investments with analytics dashboard.",
+      tags: ["web", "finance", "React"],
+      images: [mutualFundImage1, mutualFundImage2, mutualFundImage3, mutualFundImage4, mutualFundImage5, mutualFundImage6],
+      type: "client",
+      showCode: false,
+      confidential: true
+    },
+    {
+      id: 3,
+      title: "Cafe/Restaurant Due Tracker",
+      description: "A system for tracking customer dues and payments with reporting features.",
+      tags: ["web", "business", "React"],
+      images: [dueTrackerImage1, dueTrackerImage2, dueTrackerImage3],
+      type: "client",
+      showCode: false,
+      confidential: true
+    },
+    {
+      id: 4,
+      title: "Majma Technologies Website",
+      description: "A IT company providing digital solutions across the GCC region",
+      tags: ["web", "technology", "React"],
+      preview: "https://majmatechnologies.com",
+      type: "client",
+      showCode: false
+    },
+    {
+      id: 5,
       title: "Lassi Hut Website",
       description: "A Menu and Contact page built for a local cafe using JavaScript.",
       tags: ["web", "javascript"],
       preview: "https://lassihut.netlify.app",
-      type: "client"
+      type: "client",
+      showCode: true
     },
     {
-      id: 3,
+      id: 6,
       title: "Fodome - Food Waste App",
-      description: "A Flutter app for managing and reducing food waste.",
+      description: "A Flutter app for managing and reducing food waste with Firebase backend.",
       tags: ["mobile", "flutter", "firebase"],
-      video: fodomevideo, // replace with your video link
+      video: fodomevideo,
       github: "https://github.com/MohammedAshir/fultterfodome",
-      type: "personal"
+      type: "personal",
+      showCode: true
     }
-  ];
+  ], []);
 
   const handleIframeLoad = (id) => {
     setIframeLoaded(prev => ({ ...prev, [id]: true }));
@@ -46,7 +87,7 @@ const Projects = () => {
     useEffect(() => {
       if (images.length > 1) {
         const interval = setInterval(() => {
-          setCurrentIndex((prevIndex) =>
+          setCurrentIndex(prevIndex =>
             prevIndex === images.length - 1 ? 0 : prevIndex + 1
           );
         }, 3000);
@@ -57,37 +98,45 @@ const Projects = () => {
     return (
       <div className="relative h-48 w-full overflow-hidden rounded-t-xl">
         {images.map((image, index) => (
-          <motion.img
+          <motion.div
             key={index}
-            src={image}
-            alt={`Project preview ${index}`}
-            className="absolute h-full w-full object-cover"
+            className="absolute inset-0"
             initial={{ opacity: 0 }}
             animate={{
               opacity: index === currentIndex ? 1 : 0,
               zIndex: index === currentIndex ? 10 : 0
             }}
             transition={{ duration: 0.5 }}
-          />
-        ))}
-        <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1 z-20">
-          {images.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`h-2 w-2 rounded-full transition-all ${index === currentIndex ? 'bg-white w-4' : 'bg-white/50'
-                }`}
-              aria-label={`Go to slide ${index + 1}`}
+          >
+            <img
+              src={image}
+              alt={`Project preview ${index}`}
+              className="h-full w-full object-cover"
             />
-          ))}
-        </div>
+          </motion.div>
+        ))}
+        {images.length > 1 && (
+          <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1 z-20">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentIndex(index)}
+                className={`h-2 w-2 rounded-full transition-all ${index === currentIndex ? 'bg-white w-4' : 'bg-white/50'}`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     );
   };
 
-  const filteredProjects = activeFilter === 'all'
-    ? projects
-    : projects.filter(project => project.tags.includes(activeFilter));
+  const filteredProjects = useMemo(() =>
+    activeFilter === 'all'
+      ? projects
+      : projects.filter(project => project.tags.includes(activeFilter)),
+    [activeFilter, projects]
+  );
 
   return (
     <section id="projects" className="py-20 px-4 sm:px-8 bg-gray-100">
@@ -97,13 +146,13 @@ const Projects = () => {
         </h2>
 
         <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-8 sm:mb-12">
-          {['all', 'web', 'mobile', 'ecommerce'].map((filter) => (
+          {['all', 'web', 'mobile', 'ecommerce', 'finance', 'business'].map((filter) => (
             <button
               key={filter}
               onClick={() => setActiveFilter(filter)}
               className={`px-4 sm:px-6 py-1 sm:py-2 rounded-full capitalize text-sm sm:text-base transition-all ${activeFilter === filter
-                  ? 'bg-indigo-600 text-white shadow-md'
-                  : 'bg-white text-gray-800 hover:bg-gray-200'
+                ? 'bg-indigo-600 text-white shadow-md'
+                : 'bg-white text-gray-800 hover:bg-gray-200'
                 }`}
             >
               {filter}
@@ -135,12 +184,12 @@ const Projects = () => {
                       muted
                       autoPlay
                       loop
+                      playsInline
                     />
                   </div>
                 ) : project.images ? (
                   <ImageSlider images={project.images} />
                 ) : project.preview ? (
-
                   <div className="relative h-48 overflow-hidden">
                     {!iframeLoaded[project.id] && (
                       <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
@@ -170,20 +219,27 @@ const Projects = () => {
                     </a>
                   </div>
                 ) : (
-                  <div className="h-48 bg-gray-100 flex items-center justify-center">
-                    <span className="text-gray-400">No preview available</span>
+                  <div className="h-48 bg-gray-100 flex items-center justify-center rounded-t-xl">
+                    <span className="text-gray-400">Preview not available</span>
                   </div>
                 )}
 
                 <div className="p-5 sm:p-6">
                   <div className="flex justify-between items-start mb-1">
                     <h3 className="text-lg sm:text-xl font-bold">{project.title}</h3>
-                    <span className={`text-xs px-2 py-1 rounded-full ${project.type === 'client'
+                    <div className="flex gap-2">
+                      {project.confidential && (
+                        <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-800">
+                          Confidential
+                        </span>
+                      )}
+                      <span className={`text-xs px-2 py-1 rounded-full ${project.type === 'client'
                         ? 'bg-purple-100 text-purple-800'
                         : 'bg-green-100 text-green-800'
-                      }`}>
-                      {project.type}
-                    </span>
+                        }`}>
+                        {project.type}
+                      </span>
+                    </div>
                   </div>
                   <p className="text-gray-600 text-sm sm:text-base mb-3 sm:mb-4">{project.description}</p>
 
@@ -202,7 +258,7 @@ const Projects = () => {
                         Live Demo
                       </a>
                     )}
-                    {project.github && (
+                    {project.github && project.showCode && (
                       <a
                         href={project.github}
                         target="_blank"
@@ -214,6 +270,14 @@ const Projects = () => {
                         </svg>
                         Code
                       </a>
+                    )}
+                    {project.confidential && (
+                      <span className="flex items-center gap-1 text-sm bg-gray-100 text-gray-600 px-3 py-1 rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        Private
+                      </span>
                     )}
                   </div>
 
