@@ -2,44 +2,75 @@ import { motion } from 'framer-motion';
 import resumePDF from '../assets/MohammedAshir_Resume.pdf';
 
 const Resume = () => {
-  const experiences = [
+  const timeline = [
     {
-      role: 'Software Engineer',
-      company: 'Accenture (AT&T Project)',
-      duration: 'Jan 2022 - Oct 2023',
-      description: `
-        Developed a web app for managing lease agreements and rental payments in telecom.
-        - Built RESTful APIs using Java Spring Boot & Spring Framework.
-        - Integrated APIs with React for seamless frontend-backend communication.
-        - Conducted testing using Postman and JUnit; maintained quality with SonarQube.
-        - Improved system performance through SQL optimization and clean code practices.
-        - Supported deployments and resolved production issues.
-      `,
-      tech: 'Java, Spring Boot, React, JavaScript, SQL, JUnit'
+      type: 'education',
+      title: 'Bachelor of Engineering (B.E), Computer Science',
+      institution: 'Visvesvaraya Technological University (VTU)',
+      duration: '2017 – 2021',
+      description: 'Completed a comprehensive curriculum covering core computer science subjects, laying a strong foundation for software development.',
     },
     {
-      role: 'Full Stack Developer',
-      company: 'NAB Advertising (Client Project)',
-      duration: 'Nov 2023 - Jan 2025',
-      description: `
-        Developed an e-commerce web app for order tracking and inventory management.
-        - Built reusable React components with responsive UI and smooth UX.
-        - Integrated RESTful APIs, managed global state with Redux.
-        - Ensured cross-browser compatibility and tested UI using Jest & React Testing Library.
-      `,
-      tech: 'React, Redux, JavaScript, RESTful APIs, Jest, HTML, CSS'
+      type: 'courses',
+      title: 'Relevant Courses & Certifications',
+      institution: '',
+      duration: '',
+      description: `- MERN Stack Development
+- Java with Spring Boot
+- Python Programming`,
     },
     {
-      role: 'Project: Fodome (Food Wastage Reduction App)',
-      company: 'Personal Project',
+      type: 'experience',
+      title: 'Software Engineer',
+      institution: 'Accenture – AT&T Project',
+      duration: 'Jan 2022 – Oct 2023',
+      description: `Developed Java-based RESTful services using Spring Boot in a microservices architecture.
+- Integrated backend with SQL databases (MySQL/PostgreSQL) and maintained data integrity.
+- Wrote and maintained unit and integration tests using JUnit; used SonarQube for code quality.
+- Built frontend components using React.js with Redux for state management and seamless UI flows.
+- Participated in agile development, peer code reviews, and cross-functional team collaboration.
+- **Projects:**
+  - *Lease Management System*: A web app for managing lease agreements and rental payments in telecom.`,
+    },
+    {
+      type: 'experience',
+      title: 'Full Stack Developer (MERN Stack)',
+      institution: 'NAB Advertising',
+      duration: 'Nov 2023 – Jan 2025',
+      description: `Developed and maintained responsive web applications using MongoDB, Express.js, React.js, and Node.js.
+- Built scalable REST APIs and implemented authentication, payment integration, and role-based access.
+- Designed interactive and modern UIs with TypeScript and Tailwind CSS, ensuring cross-device compatibility.
+- Deployed projects to AWS, Vercel, and Netlify; implemented CI/CD workflows for production updates.
+- Provided technical support for internal IT systems and e-commerce platform management.
+- **Projects:**
+  - *MakoShark Apparel E-commerce*: Full-stack app with JWT auth integration; admin dashboard for inventory & order control.
+  - *Cafe/Restaurant Due Tracker*: Next.js application to track customer dues and generate financial reports.`,
+    },
+    {
+      type: 'project',
+      title: 'Fodome – Food Waste Reduction App',
+      institution: 'Personal Project',
       duration: '2023',
-      description: `
-        Built an Angular-based app connecting food donors with the needy.
-        - Integrated Google Maps API for location-based donation visibility.
-        - Enabled real-time updates, social sharing, Google Sign-In, and Firebase CRUD.
-      `,
-      tech: 'Angular, Firebase, Google Maps API'
-    }
+      description: `Built an Angular-based app connecting food donors with the needy.
+- Integrated Google Maps API for location-based donation visibility.
+- Enabled real-time updates, social sharing, Google Sign-In, and Firebase CRUD.`,
+    },
+    {
+      type: 'project',
+      title: 'Lassi Hut – Cafe Ordering System',
+      institution: 'Personal Project',
+      duration: '2022',
+      description: `Developed an interactive menu with cart functionality and responsive design using HTML, CSS, and JavaScript.
+- Integrated Google Maps and implemented form validation for enhanced user experience.`,
+    },
+    {
+      type: 'project',
+      title: 'Mutual Fund Investment System',
+      institution: 'Personal Project',
+      duration: '2021',
+      description: `Created a React application to track mutual fund investments with performance analytics.
+- Implemented real-time data and dashboard using Firebase backend.`,
+    },
   ];
 
   return (
@@ -62,14 +93,14 @@ const Resume = () => {
         </div>
 
         <div className="relative">
-          {/* Timeline line - positioned differently for mobile and desktop */}
+          {/* Timeline line */}
           <div className="absolute left-6 sm:left-1/2 w-1 h-full bg-indigo-200 rounded -z-10"></div>
 
-          {experiences.map((exp, index) => (
+          {timeline.map((item, index) => (
             <div key={index} className={`mb-16 flex ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-              {/* Mobile dot - always visible */}
+              {/* Mobile dot */}
               <div className="sm:hidden absolute left-6 -translate-x-1/2 w-6 h-6 bg-indigo-600 border-4 border-white rounded-full shadow-md"></div>
-              
+
               {/* Content card */}
               <motion.div
                 initial={{ opacity: 0, x: index % 2 === 0 ? -60 : 60 }}
@@ -78,14 +109,13 @@ const Resume = () => {
                 viewport={{ once: true }}
                 className={`w-full sm:w-5/12 bg-gray-50 p-6 rounded-lg border-l-4 border-indigo-500 shadow hover:shadow-md transition-shadow ${index % 2 === 0 ? 'sm:mr-auto' : 'sm:ml-auto'}`}
               >
-                <h3 className="text-xl font-semibold mb-1">{exp.role}</h3>
-                <p className="text-indigo-600 font-medium">{exp.company}</p>
-                <p className="text-sm text-gray-500 mb-3">{exp.duration}</p>
-                <p className="text-gray-700 whitespace-pre-line">{exp.description}</p>
-                <p className="text-sm text-indigo-500 mt-3 font-medium">Tech: {exp.tech}</p>
+                <h3 className="text-xl font-semibold mb-1">{item.title}</h3>
+                {item.institution && <p className="text-indigo-600 font-medium">{item.institution}</p>}
+                {item.duration && <p className="text-sm text-gray-500 mb-3">{item.duration}</p>}
+                <p className="text-gray-700 whitespace-pre-line">{item.description}</p>
               </motion.div>
-              
-              {/* Desktop dot - positioned after content for even items, before for odd */}
+
+              {/* Desktop dot */}
               <div className={`hidden sm:flex items-center ${index % 2 === 0 ? 'order-1 ml-4' : 'order-0 mr-4'}`}>
                 <div className="w-6 h-6 bg-indigo-600 border-4 border-white rounded-full shadow-md"></div>
               </div>
