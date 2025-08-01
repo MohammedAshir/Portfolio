@@ -23,12 +23,26 @@ const Navbar = () => {
     >
       <div className="max-w-6xl mx-auto px-6 py-3">
         <div className="flex justify-between items-center">
-          {/* Logo/Brand - Left aligned */}
+          {/* Logo/Brand */}
           <motion.div 
             whileHover={{ scale: 1.05 }}
-            className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
+            whileTap={{ scale: 0.95 }}
+            className="cursor-pointer group"
           >
-            Ashir
+            <div className="flex items-center space-x-2">
+              <div className="relative">
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700 rounded-xl flex items-center justify-center shadow-lg">
+                  <span className="text-white font-bold text-lg">A</span>
+                </div>
+                <div className="absolute -inset-0.5 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl opacity-0 group-hover:opacity-75 transition-opacity blur"></div>
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  Ashir
+                </h1>
+                <p className="text-xs text-gray-500 -mt-1">Software Engineer</p>
+              </div>
+            </div>
           </motion.div>
           
           {/* Desktop Navigation - Center aligned */}
