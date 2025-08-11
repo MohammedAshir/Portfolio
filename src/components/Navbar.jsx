@@ -1,11 +1,14 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { FiMenu, FiX } from 'react-icons/fi';
 import { Link } from 'react-scroll';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
   
   const navLinks = [
     { name: 'Home', to: 'home' },
@@ -14,12 +17,92 @@ const Navbar = () => {
     { name: 'Contact', to: 'contact' },
   ];
 
+  // Handle navbar visibility on scroll
+  useEffect(() => {
+    const controlNavbar = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Show navbar when scrolling up, hide when scrolling down
+      if (currentScrollY < lastScrollY || currentScrollY < 100) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+        // Close mobile menu if it's open when hiding navbar
+        if (isOpen) {
+          setIsOpen(false);
+        }
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', controlNavbar);
+    return () => window.removeEventListener('scroll', controlNavbar);
+  }, [lastScrollY, isOpen]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.height = '100%';
+    } else {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.height = '';
+    };
+  }, [isOpen]);
+
+  // Close mobile menu when clicking anywhere on the overlay
+  const handleOverlayClick = () => {
+    setIsOpen(false);
+  };
+
+  // Prevent closing when clicking on menu links (they should close after navigation)
+  const handleLinkClick = (to) => {
+    // Small delay to allow smooth scroll to start before closing
+    setTimeout(() => setIsOpen(false), 100);
+  };
+
+  // Handle escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+      }
+    };
+    
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen]);
+
   return (
     <motion.nav 
       initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="fixed w-full bg-white/90 backdrop-blur-md shadow-sm z-50 border-b border-gray-100"
+      animate={{ 
+        y: (isVisible || isOpen) ? 0 : -100,
+        opacity: (isVisible || isOpen) ? 1 : 0
+      }}
+      transition={{ 
+        duration: 0.3,
+        ease: "easeInOut"
+      }}
+      className="fixed w-full bg-white/90 backdrop-blur-md shadow-sm z-[99997] border-b border-gray-100"
+      style={{ zIndex: 99997 }}
     >
       <div className="max-w-6xl mx-auto px-6 py-3">
         <div className="flex justify-between items-center">
@@ -71,8 +154,10 @@ const Navbar = () => {
           
           {/* Mobile Menu Button */}
           <button 
-            className="md:hidden text-gray-700 focus:outline-none relative z-50"
+            className="md:hidden text-gray-700 focus:outline-none relative z-[99998] p-2 -mr-2 hover:bg-gray-100 rounded-lg transition-colors"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle mobile menu"
+            style={{ zIndex: 99998 }}
           >
             {isOpen ? (
               <FiX size={24} className="text-indigo-600" />
@@ -83,48 +168,62 @@ const Navbar = () => {
         </div>
       </div>
       
-      {/* Mobile Navigation - Full screen overlay */}
-      {isOpen && (
+      {/* Mobile Navigation - Full screen overlay using Portal */}
+      {isOpen && createPortal(
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="md:hidden fixed inset-0 bg-white z-40 pt-20 px-6"
+          transition={{ duration: 0.3 }}
+          className="md:hidden mobile-menu-overlay"
+          onClick={handleOverlayClick}
         >
-          <div className="flex flex-col h-full">
-            <div className="flex flex-col space-y-6 items-center mt-10">
-              {navLinks.map((link) => (
+          <div className="relative flex flex-col h-full justify-center items-center px-8 menu-content">
+            {/* Navigation Links */}
+            <div className="space-y-8">
+              {navLinks.map((link, index) => (
                 <motion.div
                   key={link.to}
-                  initial={{ x: -20 }}
-                  animate={{ x: 0 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    delay: 0.1 + index * 0.1,
+                    duration: 0.6,
+                    ease: "easeOut"
+                  }}
                 >
                   <Link
                     to={link.to}
                     smooth={true}
                     duration={500}
-                    className="cursor-pointer text-2xl font-medium text-gray-800 hover:text-indigo-600 transition-colors py-3"
-                    onClick={() => setIsOpen(false)}
+                    className="block text-center cursor-pointer group"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLinkClick(link.to);
+                    }}
                   >
-                    {link.name}
+                    <span className="text-5xl md:text-6xl font-light text-gray-800 hover:text-indigo-600 transition-colors duration-300 tracking-tight">
+                      {link.name}
+                    </span>
+                    <div className="w-0 h-0.5 bg-indigo-600 mx-auto mt-2 group-hover:w-16 transition-all duration-300 ease-out" />
                   </Link>
                 </motion.div>
               ))}
             </div>
             
-            
-            {/* Close button for mobile */}
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsOpen(false)}
-              className="mb-8 mx-auto px-6 py-2 bg-indigo-600 text-white rounded-full text-sm font-medium"
+            {/* Close instruction */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6, duration: 0.6 }}
+              className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center"
             >
-              Close Menu
-            </motion.button>
+              <p className="text-sm text-gray-400 mb-2">Tap anywhere to close</p>
+              <div className="w-8 h-0.5 bg-gray-300 mx-auto" />
+            </motion.div>
           </div>
-        </motion.div>
+        </motion.div>,
+        document.body
       )}
     </motion.nav>
   );

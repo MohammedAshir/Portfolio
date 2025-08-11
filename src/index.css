@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Mobile menu overlay fix */
+.mobile-menu-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: #ffffff !important;
+  z-index: 99999 !important;
+  isolation: isolate !important;
+  -webkit-backdrop-filter: blur(0px) !important;
+  backdrop-filter: blur(0px) !important;
+}
