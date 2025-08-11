@@ -19,26 +19,32 @@ const Navbar = () => {
 
   // Handle navbar visibility on scroll
   useEffect(() => {
+    let ticking = false;
+    
     const controlNavbar = () => {
       const currentScrollY = window.scrollY;
       
       // Show navbar when scrolling up, hide when scrolling down
-      if (currentScrollY < lastScrollY || currentScrollY < 100) {
+      if (currentScrollY < lastScrollY || currentScrollY < 50) {
         setIsVisible(true);
-      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+      } else if (currentScrollY > lastScrollY && currentScrollY > 50) {
         setIsVisible(false);
-        // Close mobile menu if it's open when hiding navbar
-        if (isOpen) {
-          setIsOpen(false);
-        }
       }
       
       setLastScrollY(currentScrollY);
+      ticking = false;
     };
 
-    window.addEventListener('scroll', controlNavbar);
-    return () => window.removeEventListener('scroll', controlNavbar);
-  }, [lastScrollY, isOpen]);
+    const requestTick = () => {
+      if (!ticking) {
+        requestAnimationFrame(controlNavbar);
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', requestTick, { passive: true });
+    return () => window.removeEventListener('scroll', requestTick);
+  }, [lastScrollY]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -67,12 +73,6 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
-  // Prevent closing when clicking on menu links (they should close after navigation)
-  const handleLinkClick = (to) => {
-    // Small delay to allow smooth scroll to start before closing
-    setTimeout(() => setIsOpen(false), 100);
-  };
-
   // Handle escape key
   useEffect(() => {
     const handleEscape = (e) => {
@@ -94,8 +94,7 @@ const Navbar = () => {
     <motion.nav 
       initial={{ y: -100 }}
       animate={{ 
-        y: (isVisible || isOpen) ? 0 : -100,
-        opacity: (isVisible || isOpen) ? 1 : 0
+        y: isVisible ? 0 : -100
       }}
       transition={{ 
         duration: 0.3,
@@ -197,10 +196,7 @@ const Navbar = () => {
                     smooth={true}
                     duration={500}
                     className="block text-center cursor-pointer group"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleLinkClick(link.to);
-                    }}
+                    onClick={() => setIsOpen(false)}
                   >
                     <span className="text-5xl md:text-6xl font-light text-gray-800 hover:text-indigo-600 transition-colors duration-300 tracking-tight">
                       {link.name}
