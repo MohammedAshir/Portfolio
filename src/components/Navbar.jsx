@@ -169,26 +169,22 @@ const Navbar = () => {
       
       {/* Mobile Navigation - Full screen overlay using Portal */}
       {isOpen && createPortal(
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+        <div
           className="md:hidden mobile-menu-overlay"
+          style={{
+            opacity: 1,
+            animation: 'fadeIn 0.3s ease-out'
+          }}
           onClick={handleOverlayClick}
         >
           <div className="relative flex flex-col h-full justify-center items-center px-8 menu-content">
             {/* Navigation Links */}
             <div className="space-y-8">
               {navLinks.map((link, index) => (
-                <motion.div
+                <div
                   key={link.to}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    delay: 0.1 + index * 0.1,
-                    duration: 0.6,
-                    ease: "easeOut"
+                  style={{
+                    animation: `slideUp 0.6s ease-out ${0.1 + index * 0.1}s both`
                   }}
                 >
                   <Link
@@ -203,22 +199,22 @@ const Navbar = () => {
                     </span>
                     <div className="w-0 h-0.5 bg-indigo-600 mx-auto mt-2 group-hover:w-16 transition-all duration-300 ease-out" />
                   </Link>
-                </motion.div>
+                </div>
               ))}
             </div>
             
             {/* Close instruction */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
+            <div
+              style={{
+                animation: 'fadeIn 0.6s ease-out 0.6s both'
+              }}
               className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-center"
             >
               <p className="text-sm text-gray-400 mb-2">Tap anywhere to close</p>
               <div className="w-8 h-0.5 bg-gray-300 mx-auto" />
-            </motion.div>
+            </div>
           </div>
-        </motion.div>,
+        </div>,
         document.body
       )}
     </motion.nav>

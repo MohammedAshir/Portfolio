@@ -1,0 +1,293 @@
+import { motion } from 'framer-motion';
+import { FaArrowDown, FaGithub, FaLinkedin, FaFileDownload, FaCode, FaLaptopCode, FaServer, FaCogs, FaDatabase, FaCloud } from 'react-icons/fa';
+import { HiOutlineMail, HiOutlineSparkles } from 'react-icons/hi';
+import { Link } from 'react-scroll';
+import resumePDF from '../assets/MohammedAshir_Resume.pdf';
+import { useState, useEffect } from 'react';
+import profilePhoto from '../assets/images/ashir.jpg';
+import TypingCode from './TypingCode';
+
+const Hero = () => {
+  const socialLinks = [
+    { icon: <FaGithub />, url: 'https://github.com/MohammedAshir', name: 'GitHub' },
+    { icon: <FaLinkedin />, url: 'https://www.linkedin.com/in/mohammedashir/', name: 'LinkedIn' },
+    { icon: <HiOutlineMail />, url: 'mailto:ashashir7@gmail.com', name: 'Email' }
+  ];
+  const [imageError, setImageError] = useState(false);
+
+  const skills = [
+    { 
+      icon: <FaCode />, 
+      name: 'Frontend', 
+      desc: 'React, TypeScript, Next.js',
+      color: 'from-blue-500 to-cyan-500'
+    },
+    { 
+      icon: <FaServer />, 
+      name: 'Backend', 
+      desc: 'Python, Node.js, Java Spring',
+      color: 'from-green-500 to-emerald-500'
+    },
+    { 
+      icon: <FaCogs />, 
+      name: 'ERP & Systems', 
+      desc: 'Odoo, Docker, AWS',
+      color: 'from-purple-500 to-pink-500'
+    },
+    { 
+      icon: <FaDatabase />, 
+      name: 'Databases', 
+      desc: 'PostgreSQL, MySQL, MongoDB',
+      color: 'from-orange-500 to-red-500'
+    }
+  ];
+
+  return (
+    <section id="home" className="section-container min-h-screen flex flex-col justify-center items-center text-center relative overflow-hidden px-4 py-8 md:py-0">
+      {/* Simple Flowing Lines Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Flowing lines */}
+        <div className="absolute top-20 left-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent">
+          <motion.div
+            className="h-full w-full bg-gradient-to-r from-purple-400/50 to-pink-400/50"
+            animate={{ x: ["-100%", "100%"] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+          />
+        </div>
+        
+        <div className="absolute top-1/3 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent">
+          <motion.div
+            className="h-full w-full bg-gradient-to-r from-blue-400/40 to-purple-400/40"
+            animate={{ x: ["-100%", "100%"] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "linear", delay: 2 }}
+          />
+        </div>
+        
+        <div className="absolute bottom-1/3 left-0 w-full h-px bg-gradient-to-r from-transparent via-pink-500/25 to-transparent">
+          <motion.div
+            className="h-full w-full bg-gradient-to-r from-pink-400/35 to-blue-400/35"
+            animate={{ x: ["-100%", "100%"] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "linear", delay: 4 }}
+          />
+        </div>
+      </div>
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Glassmorphism hero card */}
+        <motion.div
+          initial={{ opacity: 0, y: 50, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="glass-card p-6 sm:p-8 md:p-12 w-full mb-8 sm:mb-12"
+        >
+          {/* Profile section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="mb-8"
+          >
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="inline-block mb-8 relative"
+            >
+              <div className="w-36 h-36 md:w-44 md:h-44 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 p-1 shadow-2xl">
+                <div className="w-full h-full rounded-full overflow-hidden bg-white/10 backdrop-blur-sm relative">
+                  {imageError ? (
+                    <div className="w-full h-full flex items-center justify-center text-4xl font-bold gradient-text">
+                      MA
+                    </div>
+                  ) : (
+                    <img 
+                      src={profilePhoto}
+                      alt="Mohammed Ashir"
+                      className="w-full h-full object-cover object-center rounded-full"
+                      onError={() => setImageError(true)}
+                    />
+                  )}
+                </div>
+              </div>
+              
+              {/* Floating badge */}
+              <motion.div
+                animate={{ y: [-5, 5, -5] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="absolute -top-2 -right-2 glass-card p-2"
+              >
+                <HiOutlineSparkles className="text-yellow-400 text-lg" />
+              </motion.div>
+            </motion.div>
+
+            {/* Enhanced typography with gradient text */}
+            <motion.h1 
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+            >
+              <span className="text-white">Hi, I'm </span>
+              <br className="sm:hidden" />
+              <span className="gradient-text">Mohammed Ashir</span>
+            </motion.h1>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6, duration: 0.8 }}
+              className="mb-6 sm:mb-8"
+            >
+              <p className="text-xl sm:text-2xl md:text-3xl font-light text-white/90 mb-3 sm:mb-4">
+                Software Engineer
+              </p>
+              <p className="text-base sm:text-lg text-white/70 max-w-3xl mx-auto leading-relaxed px-2">
+                Specializing in ERP systems, full-stack development, and cloud solutions.
+                4+ years of professional experience building enterprise applications.
+              </p>
+            </motion.div>
+          </motion.div>
+
+          {/* Skills showcase with glassmorphism cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+            className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mb-8 sm:mb-12"
+          >
+            {skills.map((skill, index) => (
+              <motion.div
+                key={skill.name}
+                whileHover={{ y: -8, scale: 1.05 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className="glass-card p-3 sm:p-4 md:p-6 group"
+              >
+                <motion.div 
+                  className={`text-2xl sm:text-3xl mb-2 sm:mb-4 bg-gradient-to-r ${skill.color} bg-clip-text text-transparent`}
+                  whileHover={{ scale: 1.2, rotate: 10 }}
+                >
+                  {skill.icon}
+                </motion.div>
+                
+                <h3 className="text-white font-semibold mb-1 sm:mb-2 text-sm sm:text-base md:text-lg">{skill.name}</h3>
+                <p className="text-white/70 text-xs sm:text-sm leading-relaxed">{skill.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Modern action buttons */}
+          <motion.div 
+            className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6 mb-6 sm:mb-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.8 }}
+          >
+            <motion.a
+              href={resumePDF}
+              download="Mohammed_Ashir_Resume.pdf"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="modern-button flex items-center gap-2 sm:gap-3 text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4"
+            >
+              <FaFileDownload />
+              Download Resume
+            </motion.a>
+            
+            <Link 
+              to="contact" 
+              smooth={true}
+              duration={500}
+              offset={-70}
+            >
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="modern-button flex items-center gap-2 sm:gap-3 border-2 border-white/30 text-sm sm:text-base px-6 sm:px-8 py-3 sm:py-4"
+              >
+                <HiOutlineMail />
+                Let's Connect
+              </motion.button>
+            </Link>
+          </motion.div>
+
+          {/* Social links with glassmorphism */}
+          <motion.div 
+            className="flex justify-center gap-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2 }}
+          >
+            {socialLinks.map((link, index) => (
+              <motion.a
+                key={index}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -5, scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="glass-card p-4 text-2xl text-white/80 hover:text-white transition-colors"
+                aria-label={link.name}
+              >
+                {link.icon}
+              </motion.a>
+            ))}
+          </motion.div>
+        </motion.div>
+
+        {/* Enhanced scroll indicator */}
+        <Link 
+          to="projects"
+          smooth={true}
+          duration={500}
+          offset={-70}
+          className="cursor-pointer inline-block"
+        >
+          <motion.div
+            animate={{ y: [0, 12, 0] }}
+            transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+            whileHover={{ scale: 1.2 }}
+            className="glass-card p-4 rounded-full"
+          >
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center relative">
+                <motion.div
+                  animate={{ y: [0, 12, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                  className="w-1 h-3 bg-white/70 rounded-full mt-2"
+                />
+              </div>
+              <p className="text-sm text-white/70 font-medium">
+                Explore My Work
+              </p>
+            </div>
+          </motion.div>
+        </Link>
+        
+        {/* Floating Code Animation */}
+        <motion.div
+          initial={{ opacity: 0, x: 100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 2, duration: 1 }}
+          className="fixed bottom-8 right-8 z-20 hidden lg:block"
+        >
+          <div className="glass-card p-4">
+            <TypingCode 
+              lines={[
+                "const developer = {",
+                "  name: 'Mohammed Ashir',", 
+                "  role: 'Software Engineer',",
+                "  skills: ['Python', 'Odoo', 'React'],",
+                "  location: 'Dubai, UAE',",
+                "  passion: 'Building ERP solutions'",
+                "};"
+              ]}
+              speed={80}
+              className="w-80"
+            />
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default Hero;

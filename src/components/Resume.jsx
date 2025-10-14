@@ -181,7 +181,7 @@ const Resume = () => {
 
           <motion.a
             href={resumePDF}
-            download="Mohammed_Ashir_Resume_New.pdf"
+            download="MohammedAshir_Resume.pdf"
             whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(168, 85, 247, 0.4)" }}
             whileTap={{ scale: 0.95 }}
             className="group relative inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl font-semibold text-white shadow-xl hover:shadow-purple-500/25 transition-all duration-300 overflow-hidden"

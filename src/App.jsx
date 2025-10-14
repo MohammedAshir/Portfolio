@@ -1,32 +1,13 @@
 import { BrowserRouter as Router } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero.jsx';
-import Projects from './components/Projects';
-import Upcoming from './components/Upcoming';
-import Resume from './components/Resume';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import MagicEffects from './components/MagicEffects';
-import { AnimatePresence } from 'framer-motion';
+import Scene3D from './components/Scene3D';
+import './App.css';
 
 function App() {
   return (
-    <AnimatePresence mode="wait">
-      <Router>
-        <div className="bg-white text-gray-900 relative overflow-hidden">
-          <MagicEffects />
-          <Navbar />
-          <main>
-            <Hero />
-            <Projects />
-            <Upcoming />
-            <Resume />
-            <Contact />
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    </AnimatePresence>
+    <Router>
+      <Scene3D />
+    </Router>
   );
 }
+
 export default App;
