@@ -18,7 +18,7 @@ const Resume = () => {
     {
       type: 'courses',
       title: 'Relevant Courses & Certifications',
-      institution: 'IELTS (C1 Level) – English Proficiency (2024)',
+      institution: 'IELTS (C1 Level) – English Proficiency (2025)',
       duration: '',
       description: `- MERN Stack Development
 - Java with Spring Boot
